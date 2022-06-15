@@ -1,2 +1,2 @@
 # RuEo-v2
-Interface multitarget application fortheportal RuEo.ru
+Interface multitarget application for the portal RuEo.ru
