@@ -8,3 +8,9 @@
 
 # Build folder
 **build**
+
+# IDE folders
+**.dart_tool**
+**.idea**
+.metadata
+
