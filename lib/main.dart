@@ -1,16 +1,8 @@
-// @dart=2.9
-/* set_state
-* controller
-* */
-import 'dart:async';
-
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart'; // подключаем библиотеку material
-
-import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter/material.dart';
 
 import 'package:rueo/leftBar.dart';
 import 'package:rueo/rightBar.dart';
+import 'package:rueo/settings.dart';
 import 'package:rueo/model.dart';
 import 'package:rueo/hint_widget.dart';
 
@@ -25,7 +17,7 @@ void main() {
     MaterialApp(
       debugShowCheckedModeBanner: false, // скрываем надпись debug
       theme: ThemeData(
-        primaryColor: primaryColor,
+        primaryColor: settings.primaryColor,
       ),
       home: HomePage(),
     ),
@@ -33,17 +25,17 @@ void main() {
 }
 
 class HomePage extends StatefulWidget {
-  HomePage({Key key}) : super(key: key);
+  HomePage({Key? key}) : super(key: key);
 
   @override
   _HomePageState createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-  static const myBorder = const UnderlineInputBorder(
-      borderSide: const BorderSide(color: Colors.white, width: 2.0));
+  static var myBorder = UnderlineInputBorder(
+      borderSide: BorderSide(color: Colors.white, width: 2.0));
 
-  FocusNode _myFocusNode;
+  FocusNode? _myFocusNode;
 
   @override
   void initState() {
@@ -55,7 +47,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void dispose() {
     // Clean up the focus node when the Form is disposed.
-    _myFocusNode.dispose();
+    _myFocusNode!.dispose();
 
     super.dispose();
   }
@@ -80,7 +72,7 @@ class _HomePageState extends State<HomePage> {
         BuildContext context,
         AsyncSnapshot<AppState> snapshot,
       ) {
-        AppState curState =
+        AppState? curState =
             snapshot.hasData ? snapshot.data : AppState.emptyString;
         switch (curState) {
           case AppState.inTyping:
@@ -89,27 +81,28 @@ class _HomePageState extends State<HomePage> {
             return ArticleView(); //Text("Здесь могла бы быть ваша статья...");
           case AppState.emptyString:
             return Text("");
+          default:
+            return Text("Malbona stato!");
         }
       },
     );
   }
 
-  @override
   Widget head() {
     return Container(
-      decoration: const BoxDecoration(
-        color: primaryColor,
+      decoration: BoxDecoration(
+        color: settings.primaryColor,
       ),
       child: SafeArea(
         child: Padding(
           padding: const EdgeInsets.only(left: 5.0, right: 5.0),
           child: Row(
             children: [
-              MyIconButton(Icons.menu, () => _key.currentState.openDrawer()),
+              myIconButton(Icons.menu, () => _key.currentState!.openDrawer()),
               const SizedBox(width: 3.0, child: null),
-              MyIconButton(Icons.search, () {
-                model.trySearch(null);
-              }),
+              // myIconButton(Icons.search, () {
+              //   model.trySearch(null);
+              // }),
               Expanded(
                 flex: 1,
                 child: Padding(
@@ -127,13 +120,14 @@ class _HomePageState extends State<HomePage> {
                       AsyncSnapshot<String> snapshot,
                     ) {
                       searchController.text =
-                          snapshot.hasData ? snapshot.data : "";
+                          (snapshot.hasData ? snapshot.data : "")!;
                       searchController.selection = TextSelection.fromPosition(
                           TextPosition(offset: searchController.text.length));
                       return TextField(
                         controller: searchController,
                         focusNode: _myFocusNode,
-                        decoration: const InputDecoration(
+                        textInputAction: TextInputAction.search,
+                        decoration: InputDecoration(
                           border: myBorder,
                           enabledBorder: myBorder,
                           focusedBorder: myBorder,
@@ -153,18 +147,20 @@ class _HomePageState extends State<HomePage> {
                         },
                         onSubmitted: (text) {
                           model.trySearch(null);
-                          _myFocusNode.requestFocus();
+                          _myFocusNode!.requestFocus();
                         },
                       );
                     },
                   ),
                 ),
               ),
-              MyIconButton(Icons.clear, model.clearType),
-              MyIconButton(Icons.arrow_left, () {}, width: 25.0),
-              MyIconButton(Icons.arrow_right, () {}, width: 25.0),
-              MyIconButton(
-                  Icons.history, () => _key.currentState.openEndDrawer()),
+              myIconButton(Icons.clear, model.clearType),
+              myIconButton(Icons.undo_rounded, () {}),
+              myIconButton(Icons.find_in_page_outlined, () {}),
+              myIconButton(Icons.arrow_left, () {}, width: 25.0),
+              myIconButton(Icons.arrow_right, () {}, width: 25.0),
+              myIconButton(
+                  Icons.history, () => _key.currentState!.openEndDrawer()),
             ],
           ),
         ),
@@ -172,7 +168,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget MyIconButton(IconData icon, void Function() func,
+  Widget myIconButton(IconData icon, void Function() func,
       {double width = 30.0}) {
     return SizedBox(
       width: width,

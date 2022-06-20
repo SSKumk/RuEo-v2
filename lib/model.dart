@@ -1,14 +1,11 @@
 import 'dart:async';
 import 'dart:convert';
+
 import 'package:http/http.dart' as http;
-import 'package:flutter/material.dart';
+
+import 'package:rueo/settings.dart';
 
 enum AppState { emptyString, waitForTyping, inTyping }
-
-const primaryColor = Color(0xFF548134);
-const colorForHints = Color(0x13548134);
-
-final String url = 'https://old.rueo.ru/sercxo/';
 
 class Model {
 // Storages
@@ -61,12 +58,14 @@ class Model {
 
   void fetchHints() {
     if (_state != AppState.emptyString) {
-      http.get(url + '?ajax&term=' + _curString).then(hintsGot);
+      http
+          .get(Uri.parse(settings.url + '?ajax&term=' + _curString))
+          .then(hintsGot);
     }
   }
 
   void fetchArticle() {
-    http.get(url + _curString).then(articleGot);
+    http.get(Uri.parse(settings.url + _curString)).then(articleGot);
   }
 
   FutureOr<dynamic> hintsGot(http.Response resp) {

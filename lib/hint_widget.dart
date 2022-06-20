@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:rueo/model.dart';
-
-import 'article_widget.dart';
-import 'main.dart';
+import 'package:rueo/settings.dart';
 
 class HintView extends StatefulWidget {
   @override
@@ -43,12 +41,15 @@ class HintViewState extends State<HintView> {
                             right: 3.0,
                           ),
                           child: GestureDetector(
+                            onTap: (() {
+                              model.trySearch(word);
+                            }),
                             child: Container(
                               height: 25,
-                              decoration: const BoxDecoration(
+                              decoration: BoxDecoration(
                                 border: Border(
                                   bottom: BorderSide(
-                                    color: colorForHints,
+                                    color: settings.colorForHints,
                                     width: 2.0,
                                   ),
                                 ),
@@ -61,9 +62,6 @@ class HintViewState extends State<HintView> {
                                 ),
                               ),
                             ),
-                            onTap: (() {
-                              model.trySearch(word);
-                            }),
                           ),
                         ))
                     .toList(),
