@@ -71,7 +71,7 @@ class HintViewState extends State<HintView> {
             return const Text("Ne estas sugestoj!");
           }
         } else {
-          return Text('Stato: ${snapshot.connectionState}');
+          return Text("Stato: " + "${snapshot.connectionState}");
         }
       },
     );

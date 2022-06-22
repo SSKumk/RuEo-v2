@@ -78,7 +78,7 @@ class _HomePageState extends State<HomePage> {
           case AppState.inTyping:
             return HintView();
           case AppState.waitForTyping:
-            return ArticleView(); //Text("Здесь могла бы быть ваша статья...");
+            return ArticleView();
           case AppState.emptyString:
             return Text("");
           default:
