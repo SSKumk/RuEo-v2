@@ -11,13 +11,15 @@ import 'article_widget.dart';
 final GlobalKey<ScaffoldState> _key = GlobalKey();
 final TextEditingController searchController = TextEditingController();
 
-void main() {
+void main() async {
+  settings = await Settings.create();
+
   runApp(
     // перезапускает приложение
     MaterialApp(
       debugShowCheckedModeBanner: false, // скрываем надпись debug
       theme: ThemeData(
-        primaryColor: settings.primaryColor,
+        primaryColor: settings?.primaryColor,
       ),
       home: HomePage(),
     ),
@@ -78,7 +80,7 @@ class _HomePageState extends State<HomePage> {
           case AppState.inTyping:
             return HintView();
           case AppState.waitForTyping:
-            return ArticleView(); //Text("Здесь могла бы быть ваша статья...");
+            return ArticleView();
           case AppState.emptyString:
             return Text("");
           default:
@@ -91,7 +93,7 @@ class _HomePageState extends State<HomePage> {
   Widget head() {
     return Container(
       decoration: BoxDecoration(
-        color: settings.primaryColor,
+        color: settings?.primaryColor,
       ),
       child: SafeArea(
         child: Padding(

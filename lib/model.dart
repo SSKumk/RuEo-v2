@@ -33,6 +33,14 @@ class Model {
       StreamController<List<String>>.broadcast();
   StreamController<String> articleStream = StreamController<String>.broadcast();
 
+// Constructor - initializes the streams
+  Model() {
+    stateStream.add(_state);
+    typeStream.add(_curString);
+    hintsStream.add(_hints);
+    articleStream.add(_article);
+  }
+
 // Setting data
   void setCurString(String newText, {bool toRebuild = false}) {
     _curString = newText;
