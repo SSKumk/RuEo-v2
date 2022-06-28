@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:rueo/leftBar.dart';
 import 'package:rueo/rightBar.dart';
 import 'package:rueo/settings.dart';
+import 'package:rueo/localization.dart';
 import 'package:rueo/model.dart';
 import 'package:rueo/hint_widget.dart';
 
@@ -19,7 +20,7 @@ void main() async {
     MaterialApp(
       debugShowCheckedModeBanner: false, // скрываем надпись debug
       theme: ThemeData(
-        primaryColor: settings?.primaryColor,
+        primaryColor: Settings.primaryColor,
       ),
       home: HomePage(),
     ),
@@ -84,7 +85,19 @@ class _HomePageState extends State<HomePage> {
           case AppState.emptyString:
             return Text("");
           default:
-            return Text("Malbona stato!");
+            return StreamBuilder<Languages>(
+                stream: settings?.langStream.stream,
+                initialData: Settings.defaultSettings.curLang,
+                builder: (
+                  BuildContext context,
+                  AsyncSnapshot<Languages> snapshot,
+                ) {
+                  Languages langToShow;
+                  langToShow = snapshot.hasData
+                      ? snapshot.data!
+                      : Settings.defaultSettings.curLang;
+                  return Text(messages[langToShow]![Messages.badState]!);
+                });
         }
       },
     );
@@ -93,7 +106,7 @@ class _HomePageState extends State<HomePage> {
   Widget head() {
     return Container(
       decoration: BoxDecoration(
-        color: settings?.primaryColor,
+        color: Settings.primaryColor,
       ),
       child: SafeArea(
         child: Padding(
@@ -102,9 +115,6 @@ class _HomePageState extends State<HomePage> {
             children: [
               myIconButton(Icons.menu, () => _key.currentState!.openDrawer()),
               const SizedBox(width: 3.0, child: null),
-              // myIconButton(Icons.search, () {
-              //   model.trySearch(null);
-              // }),
               Expanded(
                 flex: 1,
                 child: Padding(
@@ -125,33 +135,46 @@ class _HomePageState extends State<HomePage> {
                           (snapshot.hasData ? snapshot.data : "")!;
                       searchController.selection = TextSelection.fromPosition(
                           TextPosition(offset: searchController.text.length));
-                      return TextField(
-                        controller: searchController,
-                        focusNode: _myFocusNode,
-                        textInputAction: TextInputAction.search,
-                        decoration: InputDecoration(
-                          border: myBorder,
-                          enabledBorder: myBorder,
-                          focusedBorder: myBorder,
-                          isDense: true,
-                          hintText: "Tajpu vorton",
-                          hintStyle: TextStyle(color: Colors.white60),
-                          contentPadding: EdgeInsets.symmetric(
-                              horizontal: 3.0, vertical: 3.0),
-                        ),
-                        cursorColor: Colors.white,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 18.0,
-                        ),
-                        onChanged: (text) {
-                          model.typeChanged(text);
-                        },
-                        onSubmitted: (text) {
-                          model.trySearch(null);
-                          _myFocusNode!.requestFocus();
-                        },
-                      );
+                      return StreamBuilder<Languages>(
+                          stream: settings?.langStream.stream,
+                          initialData: Settings.defaultSettings.curLang,
+                          builder: (
+                            BuildContext context,
+                            AsyncSnapshot<Languages> snapshot,
+                          ) {
+                            Languages langToShow;
+                            langToShow = snapshot.hasData
+                                ? snapshot.data!
+                                : Settings.defaultSettings.curLang;
+                            return TextField(
+                              controller: searchController,
+                              focusNode: _myFocusNode,
+                              textInputAction: TextInputAction.search,
+                              decoration: InputDecoration(
+                                border: myBorder,
+                                enabledBorder: myBorder,
+                                focusedBorder: myBorder,
+                                isDense: true,
+                                hintText:
+                                    messages[langToShow]![Messages.typeInvitation]!,
+                                hintStyle: TextStyle(color: Colors.white60),
+                                contentPadding: EdgeInsets.symmetric(
+                                    horizontal: 3.0, vertical: 3.0),
+                              ),
+                              cursorColor: Colors.white,
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 18.0,
+                              ),
+                              onChanged: (text) {
+                                model.typeChanged(text);
+                              },
+                              onSubmitted: (text) {
+                                model.trySearch(null);
+                                _myFocusNode!.requestFocus();
+                              },
+                            );
+                          });
                     },
                   ),
                 ),

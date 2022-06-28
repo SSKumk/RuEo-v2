@@ -49,7 +49,7 @@ class HintViewState extends State<HintView> {
                               decoration: BoxDecoration(
                                 border: Border(
                                   bottom: BorderSide(
-                                    color: settings.colorForHints,
+                                    color: Settings.colorForHints,
                                     width: 2.0,
                                   ),
                                 ),

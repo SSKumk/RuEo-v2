@@ -15,19 +15,27 @@ class SettingsPack {
 }
 
 class Settings {
-  final primaryColor = Color(0xFF548134);
-  final colorForHints = Color(0x13548134);
+  static final Color primaryColor = Color(0xFF548134);
+  static final Color colorForHints = Color(0x13548134);
 
-  final String url = 'https://old.rueo.ru/sercxo/';
+  static final String url = 'https://old.rueo.ru/sercxo/';
 
   late SharedPreferences _prefs;
 
-  static final SettingsPack _defaultSettings = SettingsPack(Languages.eo);
+  static final SettingsPack defaultSettings = SettingsPack(Languages.eo);
+
   late SettingsPack _curSettings;
 
   static const String _langData = "lang";
   StreamController<Languages> langStream =
       StreamController<Languages>.broadcast();
+  void setLang(Languages newLang) async {
+    if (newLang != _curSettings.curLang) {
+      _curSettings.curLang = newLang;
+      await _prefs.setString(_langData, EnumToString.convertToString(newLang));
+      langStream.add(newLang);
+    }
+  }
 
   Settings._create(SharedPreferences prefs, SettingsPack curSettings) {
     _prefs = prefs;
@@ -46,7 +54,7 @@ class Settings {
         temp == null ? null : EnumToString.fromString(Languages.values, temp);
 
     if (temp == null || lang == null) {
-      lang = _defaultSettings.curLang;
+      lang = Settings.defaultSettings.curLang;
       await prefs.setString(_langData, EnumToString.convertToString(lang));
     }
 
