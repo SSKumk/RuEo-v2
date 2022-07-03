@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:get_it/get_it.dart';
 
 import 'package:rueo/model.dart';
 
@@ -19,7 +20,7 @@ class ArticleViewState extends State<ArticleView> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<String>(
-      stream: model.articleStream.stream,
+      stream: GetIt.I<Model>().articleStream.stream,
       initialData: '',
       builder: (
         BuildContext context,

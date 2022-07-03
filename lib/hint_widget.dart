@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 
 import 'package:rueo/model.dart';
 import 'package:rueo/settings.dart';
@@ -14,7 +15,7 @@ class HintViewState extends State<HintView> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<List<String>>(
-      stream: model.hintsStream.stream,
+      stream: GetIt.I<Model>().hintsStream.stream,
       initialData: [],
       builder: (
         BuildContext context,
@@ -42,7 +43,7 @@ class HintViewState extends State<HintView> {
                           ),
                           child: GestureDetector(
                             onTap: (() {
-                              model.trySearch(word);
+                              GetIt.I<Model>().trySearch(word);
                             }),
                             child: Container(
                               height: 25,

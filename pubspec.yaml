@@ -33,6 +33,8 @@ dependencies:
   flutter_html: ^0.11.1
   shared_preferences: ^2.0.15
   enum_to_string: ^2.0.1
+  elementary: ^1.1.3
+  get_it: ^7.2.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

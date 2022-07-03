@@ -64,6 +64,8 @@ class Settings {
 
     return settings;
   }
-}
 
-Settings? settings;
+  String retrieveMessage(Messages message) {
+    return messages[_curSettings.curLang]![message]!;
+  }
+}

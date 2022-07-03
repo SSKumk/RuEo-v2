@@ -156,5 +156,3 @@ class Model {
     setCurString("", toRebuild: true);
   }
 }
-
-Model model = Model();

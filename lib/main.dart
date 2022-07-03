@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 
 import 'package:rueo/leftBar.dart';
 import 'package:rueo/rightBar.dart';
@@ -6,14 +7,19 @@ import 'package:rueo/settings.dart';
 import 'package:rueo/localization.dart';
 import 'package:rueo/model.dart';
 import 'package:rueo/hint_widget.dart';
-
-import 'article_widget.dart';
+import 'package:rueo/article_widget.dart';
 
 final GlobalKey<ScaffoldState> _key = GlobalKey();
 final TextEditingController searchController = TextEditingController();
 
 void main() async {
-  settings = await Settings.create();
+  WidgetsFlutterBinding.ensureInitialized();
+
+  Settings settings = await Settings.create();
+  GetIt.I.registerSingleton<Settings>(settings);
+
+  Model model = Model();
+  GetIt.I.registerSingleton<Model>(model);
 
   runApp(
     // перезапускает приложение
@@ -69,7 +75,7 @@ class _HomePageState extends State<HomePage> {
 
   Widget viewPanel() {
     return StreamBuilder<AppState>(
-      stream: model.stateStream.stream,
+      stream: GetIt.I<Model>().stateStream.stream,
       initialData: AppState.emptyString,
       builder: (
         BuildContext context,
@@ -86,17 +92,14 @@ class _HomePageState extends State<HomePage> {
             return Text("");
           default:
             return StreamBuilder<Languages>(
-                stream: settings?.langStream.stream,
+                stream: GetIt.I<Settings>().langStream.stream,
                 initialData: Settings.defaultSettings.curLang,
                 builder: (
                   BuildContext context,
-                  AsyncSnapshot<Languages> snapshot,
+                  _,
                 ) {
-                  Languages langToShow;
-                  langToShow = snapshot.hasData
-                      ? snapshot.data!
-                      : Settings.defaultSettings.curLang;
-                  return Text(messages[langToShow]![Messages.badState]!);
+                  return Text(
+                      GetIt.I<Settings>().retrieveMessage(Messages.badState));
                 });
         }
       },
@@ -125,7 +128,7 @@ class _HomePageState extends State<HomePage> {
                     right: 3.0,
                   ),
                   child: StreamBuilder<String>(
-                    stream: model.typeStream.stream,
+                    stream: GetIt.I<Model>().typeStream.stream,
                     initialData: "",
                     builder: (
                       BuildContext context,
@@ -136,7 +139,7 @@ class _HomePageState extends State<HomePage> {
                       searchController.selection = TextSelection.fromPosition(
                           TextPosition(offset: searchController.text.length));
                       return StreamBuilder<Languages>(
-                          stream: settings?.langStream.stream,
+                          stream: GetIt.I<Settings>().langStream.stream,
                           initialData: Settings.defaultSettings.curLang,
                           builder: (
                             BuildContext context,
@@ -155,8 +158,8 @@ class _HomePageState extends State<HomePage> {
                                 enabledBorder: myBorder,
                                 focusedBorder: myBorder,
                                 isDense: true,
-                                hintText:
-                                    messages[langToShow]![Messages.typeInvitation]!,
+                                hintText: messages[langToShow]![
+                                    Messages.typeInvitation]!,
                                 hintStyle: TextStyle(color: Colors.white60),
                                 contentPadding: EdgeInsets.symmetric(
                                     horizontal: 3.0, vertical: 3.0),
@@ -167,10 +170,10 @@ class _HomePageState extends State<HomePage> {
                                 fontSize: 18.0,
                               ),
                               onChanged: (text) {
-                                model.typeChanged(text);
+                                GetIt.I<Model>().typeChanged(text);
                               },
                               onSubmitted: (text) {
-                                model.trySearch(null);
+                                GetIt.I<Model>().trySearch(null);
                                 _myFocusNode!.requestFocus();
                               },
                             );
@@ -179,7 +182,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
               ),
-              myIconButton(Icons.clear, model.clearType),
+              myIconButton(Icons.clear, GetIt.I<Model>().clearType),
               myIconButton(Icons.undo_rounded, () {}),
               myIconButton(Icons.find_in_page_outlined, () {}),
               myIconButton(Icons.arrow_left, () {}, width: 25.0),
