@@ -15,14 +15,14 @@ class SettingsPack {
 }
 
 class Settings {
-  static final Color primaryColor = Color(0xFF548134);
-  static final Color colorForHints = Color(0x13548134);
+  Color primaryColor = Color(0xFF548134);
+  Color colorForHints = Color(0x13548134);
 
-  static final String url = 'https://old.rueo.ru/sercxo/';
+  String url = 'https://old.rueo.ru/sercxo/';
 
   late SharedPreferences _prefs;
 
-  static final SettingsPack defaultSettings = SettingsPack(Languages.en);
+  static final SettingsPack defaultSettings = SettingsPack(Languages.eo);
 
   late SettingsPack _curSettings;
 
@@ -52,8 +52,6 @@ class Settings {
     temp = prefs.getString(_langData);
     Languages? lang =
         temp == null ? null : EnumToString.fromString(Languages.values, temp);
-
-    lang = Languages.en; // !!!!!!!!!!!!!
 
     if (temp == null || lang == null) {
       lang = Settings.defaultSettings.curLang;

@@ -2,81 +2,80 @@
 
 import 'package:flutter/material.dart';
 
-class RDrawer extends StatefulWidget {
-  RDrawer({Key? key}) : super(key: key);
+class RightDrawer extends StatefulWidget {
+  RightDrawer({Key? key}) : super(key: key);
 
   @override
-  RDrawerState createState() => RDrawerState();
+  RightDrawerState createState() => RightDrawerState();
 }
 
 // Press the Navigation Drawer button to the left of AppBar to show
-class RDrawerState extends State<RDrawer> {
+class RightDrawerState extends State<RightDrawer> {
   double rating = 0.0;
 
   @override
   Widget build(BuildContext context) {
     return Drawer(
         child: ListView(
-        padding: EdgeInsets.zero,
-        children: const <Widget>[
-          DrawerHeader(
-            decoration: BoxDecoration(
-              color: Color(0xFF64DD17),
-            ),
-            child: Text(
-              'Меню',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 24,
-              ),
-            ),
-          ),
-          ListTile(
-            leading: Icon(Icons.message),
-            title: Text('письмо автору словаря'),
-            hoverColor: Colors.white60,
-            //onTap: () => selectedItem(context, 0),
-          ),
-          ListTile(
-            leading: Icon(Icons.message),
-            title: Text('письмо автору приложения'),
-            hoverColor: Colors.white60,
-            //onTap: () {},
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          Divider(
+      padding: EdgeInsets.zero,
+      children: const <Widget>[
+        DrawerHeader(
+          decoration: BoxDecoration(
             color: Color(0xFF64DD17),
           ),
-          ListTile(
-            leading: Icon(Icons.settings),
-            title: Text('Settings'),
-            hoverColor: Colors.white60,
-            //onTap: () {},
+          child: Text(
+            'Меню',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 24,
+            ),
           ),
-          ListTile(
-            leading: Icon(Icons.settings),
-            title: Text('Size'),
+        ),
+        ListTile(
+          leading: Icon(Icons.message),
+          title: Text('письмо автору словаря'),
+          hoverColor: Colors.white60,
+          //onTap: () => selectedItem(context, 0),
+        ),
+        ListTile(
+          leading: Icon(Icons.message),
+          title: Text('письмо автору приложения'),
+          hoverColor: Colors.white60,
+          //onTap: () {},
+        ),
+        SizedBox(
+          height: 20,
+        ),
+        Divider(
+          color: Color(0xFF64DD17),
+        ),
+        ListTile(
+          leading: Icon(Icons.settings),
+          title: Text('Settings'),
+          hoverColor: Colors.white60,
+          //onTap: () {},
+        ),
+        ListTile(
+          leading: Icon(Icons.settings),
+          title: Text('Size'),
 
-            hoverColor: Colors.white60,
-            //onTap: () {},
-          ),
-          // Slider(
-          //   min: -2,
-          //   max: 2,
-          //   value: rating,
-          //   label: rating.round().toString(),
-          //   onChanged: (value) {
-          //     setState(() {
-          //       rating = value;
-          //     });
-          //   },
-          //   divisions: 5,
-          // ),
-        ],
-      )
-    );
+          hoverColor: Colors.white60,
+          //onTap: () {},
+        ),
+        // Slider(
+        //   min: -2,
+        //   max: 2,
+        //   value: rating,
+        //   label: rating.round().toString(),
+        //   onChanged: (value) {
+        //     setState(() {
+        //       rating = value;
+        //     });
+        //   },
+        //   divisions: 5,
+        // ),
+      ],
+    ));
   }
 
   Widget buildMenuItem({

@@ -15,7 +15,9 @@ enum Messages {
   noArticle, // No article is loaded
   articleLoadError, // Error during loading the article
   strangeStateOfArticleLoad, // just what it is
-
+  mailAboutVocabulary, // A mail to the authors of the vocabulary
+  mailAboutApp, // A mail to the authors of the application
+  settings, // Settings
 }
 
 Map<Languages, Map<Messages, String>> messages = {
@@ -29,6 +31,9 @@ Map<Languages, Map<Messages, String>> messages = {
     Messages.noArticle: "Статья не загружена",
     Messages.articleLoadError: "Ошибка загрузки статьи",
     Messages.strangeStateOfArticleLoad: "Неверное состояние закрузки статьи",
+    Messages.mailAboutVocabulary: "Авторам словаря",
+    Messages.mailAboutApp: "Авторам приложения",
+    Messages.settings: "Настройки",
   },
 //
   Languages.eo: {
@@ -42,6 +47,9 @@ Map<Languages, Map<Messages, String>> messages = {
     Messages.articleLoadError: "Eraro dum alŝutado de artikolo",
     Messages.strangeStateOfArticleLoad:
         "Malĝusta stato dum alŝutado de artikolo",
+    Messages.mailAboutVocabulary: "Al la aŭtoroj de la vortaro",
+    Messages.mailAboutApp: "Al la aŭtoroj de la apo",
+    Messages.settings: "Agordoj",
   },
 //
   Languages.en: {
@@ -53,5 +61,8 @@ Map<Languages, Map<Messages, String>> messages = {
     Messages.noArticle: "No article",
     Messages.articleLoadError: "Error loading article",
     Messages.strangeStateOfArticleLoad: "Bad state of loading article",
+    Messages.mailAboutVocabulary: "To the authots of the vocabulary",
+    Messages.mailAboutApp: "To the authots of the program",
+    Messages.settings: "Settings",
   },
 };

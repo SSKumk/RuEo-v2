@@ -69,13 +69,13 @@ class Model {
   void fetchHints() {
     if (_state != AppState.emptyString) {
       http
-          .get(Uri.parse(Settings.url + '?ajax&term=' + _curString))
+          .get(Uri.parse(GetIt.I<Settings>().url + '?ajax&term=' + _curString))
           .then(hintsGot);
     }
   }
 
   void fetchArticle() {
-    http.get(Uri.parse(Settings.url + _curString)).then(articleGot);
+    http.get(Uri.parse(GetIt.I<Settings>().url + _curString)).then(articleGot);
   }
 
   FutureOr<dynamic> hintsGot(http.Response resp) {

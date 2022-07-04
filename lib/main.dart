@@ -26,7 +26,7 @@ void main() async {
     MaterialApp(
       debugShowCheckedModeBanner: false, // скрываем надпись debug
       theme: ThemeData(
-        primaryColor: Settings.primaryColor,
+        primaryColor: GetIt.I<Settings>().primaryColor,
       ),
       home: HomePage(),
     ),
@@ -65,8 +65,8 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         key: _key,
-        drawer: LeftNavDrawer(),
-        endDrawer: RDrawer(),
+        drawer: LeftDrawer(),
+        endDrawer: RightDrawer(),
         body: Column(children: [
           head(),
           viewPanel(),
@@ -101,7 +101,7 @@ class _HomePageState extends State<HomePage> {
   Widget head() {
     return Container(
       decoration: BoxDecoration(
-        color: Settings.primaryColor,
+        color: GetIt.I<Settings>().primaryColor,
       ),
       child: SafeArea(
         child: Padding(
