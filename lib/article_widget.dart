@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:get_it/get_it.dart';
+import 'package:rueo/main.dart';
 
 import 'package:rueo/model.dart';
+import 'package:rueo/settings.dart';
+import 'package:rueo/localization.dart';
 
 class ArticleView extends StatefulWidget {
   @override
@@ -31,7 +34,8 @@ class ArticleViewState extends State<ArticleView> {
         } else if (snapshot.connectionState == ConnectionState.active ||
             snapshot.connectionState == ConnectionState.done) {
           if (snapshot.hasError) {
-            return const Text('Eraro dum prenado de artikolo!');
+            return constructWithLanguage(
+                Messages.articleLoadError, (mess) => Text(mess));
           } else if (snapshot.hasData) {
             return Expanded(
               flex: 1,
@@ -48,10 +52,13 @@ class ArticleViewState extends State<ArticleView> {
               ),
             );
           } else {
-            return const Text("Ne estas artikolo!");
+            return constructWithLanguage(
+                Messages.noArticle, (mess) => Text(mess));
           }
         } else {
-          return Text('Stato: ${snapshot.connectionState}');
+          return constructWithLanguage(
+              Messages.strangeStateOfArticleLoad, (mess) => Text(mess),
+              addText: ": ${snapshot.connectionState}");
         }
       },
     );

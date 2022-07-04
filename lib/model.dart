@@ -129,7 +129,6 @@ class Model {
         break;
 
       case AppState.inTyping:
-        print("typeChanged when inTyping: text '${newText}'");
         setCurString(newText);
         fetchHints();
         break;

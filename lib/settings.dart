@@ -68,8 +68,8 @@ class Settings {
   }
 
   String retrieveMessage(Messages message) {
-    print(
-        "Retrieving message '${message}', current language - '${_curSettings.curLang}'");
+    // print(
+    //     "Retrieving message '${message}', current language - '${_curSettings.curLang}'");
     return messages[_curSettings.curLang]![message]!;
   }
 }

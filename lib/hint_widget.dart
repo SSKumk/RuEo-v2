@@ -28,7 +28,8 @@ class HintViewState extends State<HintView> {
         } else if (snapshot.connectionState == ConnectionState.active ||
             snapshot.connectionState == ConnectionState.done) {
           if (snapshot.hasError) {
-            return const Text('Eraro dum prenado de sugestoj!');
+            return constructWithLanguage(
+                Messages.suggestionLoadError, (mess) => Text(mess));
           } else if (snapshot.hasData) {
             return Expanded(
               child: ListView(
@@ -75,7 +76,9 @@ class HintViewState extends State<HintView> {
                 Messages.noSuggestions, (mess) => Text(mess));
           }
         } else {
-          return Text("Stato: " + "${snapshot.connectionState}");
+          return constructWithLanguage(
+              Messages.strangeStateOfSuggestionLoad, (mess) => Text(mess),
+              addText: ": '${snapshot.connectionState}'");
         }
       },
     );

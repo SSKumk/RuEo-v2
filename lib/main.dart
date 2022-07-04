@@ -196,7 +196,8 @@ class _HomePageState extends State<HomePage> {
 }
 
 Widget constructWithLanguage(
-    Messages messType, Widget Function(String mess) func) {
+    Messages messType, Widget Function(String mess) func,
+    {String addText = ""}) {
   return StreamBuilder<Languages>(
       stream: GetIt.I<Settings>().langStream.stream,
       initialData: Settings.defaultSettings.curLang,
@@ -204,6 +205,6 @@ Widget constructWithLanguage(
         BuildContext context,
         _,
       ) {
-        return func(GetIt.I<Settings>().retrieveMessage(messType));
+        return func(GetIt.I<Settings>().retrieveMessage(messType) + addText);
       });
 }
