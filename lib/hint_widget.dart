@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
+import 'package:rueo/main.dart';
 import 'package:rueo/model.dart';
 import 'package:rueo/settings.dart';
+import 'package:rueo/localization.dart';
 
 class HintView extends StatefulWidget {
   @override
@@ -69,7 +71,8 @@ class HintViewState extends State<HintView> {
               ),
             );
           } else {
-            return const Text("Ne estas sugestoj!");
+            return constructWithLanguage(
+                Messages.noSuggestions, (mess) => Text(mess));
           }
         } else {
           return Text("Stato: " + "${snapshot.connectionState}");

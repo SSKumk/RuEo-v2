@@ -91,16 +91,8 @@ class _HomePageState extends State<HomePage> {
           case AppState.emptyString:
             return Text("");
           default:
-            return StreamBuilder<Languages>(
-                stream: GetIt.I<Settings>().langStream.stream,
-                initialData: Settings.defaultSettings.curLang,
-                builder: (
-                  BuildContext context,
-                  _,
-                ) {
-                  return Text(
-                      GetIt.I<Settings>().retrieveMessage(Messages.badState));
-                });
+            return constructWithLanguage(
+                Messages.badState, (mess) => Text(mess));
         }
       },
     );
@@ -138,46 +130,35 @@ class _HomePageState extends State<HomePage> {
                           (snapshot.hasData ? snapshot.data : "")!;
                       searchController.selection = TextSelection.fromPosition(
                           TextPosition(offset: searchController.text.length));
-                      return StreamBuilder<Languages>(
-                          stream: GetIt.I<Settings>().langStream.stream,
-                          initialData: Settings.defaultSettings.curLang,
-                          builder: (
-                            BuildContext context,
-                            AsyncSnapshot<Languages> snapshot,
-                          ) {
-                            Languages langToShow;
-                            langToShow = snapshot.hasData
-                                ? snapshot.data!
-                                : Settings.defaultSettings.curLang;
-                            return TextField(
-                              controller: searchController,
-                              focusNode: _myFocusNode,
-                              textInputAction: TextInputAction.search,
-                              decoration: InputDecoration(
-                                border: myBorder,
-                                enabledBorder: myBorder,
-                                focusedBorder: myBorder,
-                                isDense: true,
-                                hintText: messages[langToShow]![
-                                    Messages.typeInvitation]!,
-                                hintStyle: TextStyle(color: Colors.white60),
-                                contentPadding: EdgeInsets.symmetric(
-                                    horizontal: 3.0, vertical: 3.0),
-                              ),
-                              cursorColor: Colors.white,
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 18.0,
-                              ),
-                              onChanged: (text) {
-                                GetIt.I<Model>().typeChanged(text);
-                              },
-                              onSubmitted: (text) {
-                                GetIt.I<Model>().trySearch(null);
-                                _myFocusNode!.requestFocus();
-                              },
-                            );
-                          });
+                      return constructWithLanguage(
+                          Messages.typeInvitation,
+                          (mess) => TextField(
+                                controller: searchController,
+                                focusNode: _myFocusNode,
+                                textInputAction: TextInputAction.search,
+                                decoration: InputDecoration(
+                                  border: myBorder,
+                                  enabledBorder: myBorder,
+                                  focusedBorder: myBorder,
+                                  isDense: true,
+                                  hintText: mess,
+                                  hintStyle: TextStyle(color: Colors.white60),
+                                  contentPadding: EdgeInsets.symmetric(
+                                      horizontal: 3.0, vertical: 3.0),
+                                ),
+                                cursorColor: Colors.white,
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 18.0,
+                                ),
+                                onChanged: (text) {
+                                  GetIt.I<Model>().typeChanged(text);
+                                },
+                                onSubmitted: (text) {
+                                  GetIt.I<Model>().trySearch(null);
+                                  _myFocusNode!.requestFocus();
+                                },
+                              ));
                     },
                   ),
                 ),
@@ -212,4 +193,17 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
+}
+
+Widget constructWithLanguage(
+    Messages messType, Widget Function(String mess) func) {
+  return StreamBuilder<Languages>(
+      stream: GetIt.I<Settings>().langStream.stream,
+      initialData: Settings.defaultSettings.curLang,
+      builder: (
+        BuildContext context,
+        _,
+      ) {
+        return func(GetIt.I<Settings>().retrieveMessage(messType));
+      });
 }

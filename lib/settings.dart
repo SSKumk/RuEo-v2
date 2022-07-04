@@ -22,7 +22,7 @@ class Settings {
 
   late SharedPreferences _prefs;
 
-  static final SettingsPack defaultSettings = SettingsPack(Languages.eo);
+  static final SettingsPack defaultSettings = SettingsPack(Languages.en);
 
   late SettingsPack _curSettings;
 
@@ -53,6 +53,8 @@ class Settings {
     Languages? lang =
         temp == null ? null : EnumToString.fromString(Languages.values, temp);
 
+    lang = Languages.en; // !!!!!!!!!!!!!
+
     if (temp == null || lang == null) {
       lang = Settings.defaultSettings.curLang;
       await prefs.setString(_langData, EnumToString.convertToString(lang));
@@ -66,6 +68,8 @@ class Settings {
   }
 
   String retrieveMessage(Messages message) {
+    print(
+        "Retrieving message '${message}', current language - '${_curSettings.curLang}'");
     return messages[_curSettings.curLang]![message]!;
   }
 }

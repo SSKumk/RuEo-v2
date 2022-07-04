@@ -2,8 +2,10 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:get_it/get_it.dart';
 
 import 'package:rueo/settings.dart';
+import 'package:rueo/localization.dart';
 
 enum AppState { emptyString, waitForTyping, inTyping }
 
@@ -83,7 +85,7 @@ class Model {
             .where((hint) => hint != ""),
         growable: false);
     if (gotHints.isEmpty) {
-      gotHints = ["Ne estas sugestoj!"];
+      gotHints = [GetIt.I<Settings>().retrieveMessage(Messages.noSuggestions)];
     }
     setHints(gotHints);
   }
