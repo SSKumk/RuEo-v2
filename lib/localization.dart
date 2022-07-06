@@ -18,6 +18,8 @@ enum Messages {
   mailAboutVocabulary, // A mail to the authors of the vocabulary
   mailAboutApp, // A mail to the authors of the application
   settings, // Settings
+  help, // Help
+  settingsTitle, // Title of the settings screen
 }
 
 Map<Languages, Map<Messages, String>> messages = {
@@ -34,6 +36,8 @@ Map<Languages, Map<Messages, String>> messages = {
     Messages.mailAboutVocabulary: "Авторам словаря",
     Messages.mailAboutApp: "Авторам приложения",
     Messages.settings: "Настройки",
+    Messages.help: "Помощь",
+    Messages.settingsTitle: "Настройки программы",
   },
 //
   Languages.eo: {
@@ -50,6 +54,8 @@ Map<Languages, Map<Messages, String>> messages = {
     Messages.mailAboutVocabulary: "Al la aŭtoroj de la vortaro",
     Messages.mailAboutApp: "Al la aŭtoroj de la apo",
     Messages.settings: "Agordoj",
+    Messages.help: "Helpo",
+    Messages.settingsTitle: "Agordoj de apo",
   },
 //
   Languages.en: {
@@ -64,5 +70,7 @@ Map<Languages, Map<Messages, String>> messages = {
     Messages.mailAboutVocabulary: "To the authots of the vocabulary",
     Messages.mailAboutApp: "To the authots of the program",
     Messages.settings: "Settings",
+    Messages.help: "Help",
+    Messages.settingsTitle: "Program settings",
   },
 };

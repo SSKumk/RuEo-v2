@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:rueo/main.dart';
 
-import 'package:rueo/model.dart';
 import 'package:rueo/settings.dart';
 import 'package:rueo/localization.dart';
+import 'package:rueo/settings_screen.dart';
 
 // Press the Navigation Drawer button to the left of AppBar to show
 class LeftDrawer extends StatelessWidget {
@@ -27,7 +27,7 @@ class LeftDrawer extends StatelessWidget {
                   child: Row(
                     children: [
                       SizedBox(width: 10),
-                      Image.asset("asset/esperanto_star.png", width: 48),
+                      Image.asset("assets/esperanto_star.png", width: 48),
                       SizedBox(width: 10),
                       Text("RuEo",
                           style: TextStyle(color: Colors.white, fontSize: 24)),
@@ -44,60 +44,21 @@ class LeftDrawer extends StatelessWidget {
               indent: 10.0,
               endIndent: 10.0,
             ),
-            Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  children: <Widget>[
-                    Container(
-                      height: 35.0,
-                      child: constructWithLanguage(
-                        Messages.mailAboutVocabulary,
-                        (mess) => ListTile(
-                          leading: Icon(
-                            Icons.mail,
-                            color: Colors.white,
-                          ),
-                          minLeadingWidth: 10,
-                          title: Text(mess,
-                              style: TextStyle(
-                                  fontSize: 18.0, color: Colors.white)),
-                        ),
-                      ),
-                    ),
-                    Container(
-                      height: 35.0,
-                      child: constructWithLanguage(
-                        Messages.mailAboutApp,
-                        (mess) => ListTile(
-                          leading: Icon(
-                            Icons.mail,
-                            color: Colors.white,
-                          ),
-                          minLeadingWidth: 10,
-                          title: Text(mess,
-                              style: TextStyle(
-                                  fontSize: 18.0, color: Colors.white)),
-                        ),
-                      ),
-                    ),
-                    Container(
-                      height: 35.0,
-                      child: constructWithLanguage(
-                        Messages.settings,
-                        (mess) => ListTile(
-                          leading: Icon(
-                            Icons.settings,
-                            color: Colors.white,
-                          ),
-                          minLeadingWidth: 10,
-                          title: Text(mess,
-                              style: TextStyle(
-                                  fontSize: 18.0, color: Colors.white)),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+            SingleChildScrollView(
+              child: Column(
+                children: <Widget>[
+                  constructItem(
+                      Messages.mailAboutVocabulary, Icons.mail, () {}),
+                  constructItem(Messages.mailAboutApp, Icons.mail, () {}),
+                  constructItem(Messages.settings, Icons.settings, () {
+                    Navigator.of(context).pop();
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (_) => SettingsPage()),
+                    );
+                  }),
+                  constructItem(Messages.help, Icons.help, () {}),
+                ],
               ),
             ),
           ],
@@ -105,4 +66,24 @@ class LeftDrawer extends StatelessWidget {
       ),
     );
   }
+}
+
+Widget constructItem(
+    Messages messType, IconData icon, void Function() tapProcessor) {
+  return Container(
+    height: 35.0,
+    child: constructWithLanguage(
+      messType,
+      (mess) => ListTile(
+        leading: Icon(
+          icon,
+          color: Colors.white,
+        ),
+        minLeadingWidth: 10,
+        title:
+            Text(mess, style: TextStyle(fontSize: 18.0, color: Colors.white)),
+        onTap: tapProcessor,
+      ),
+    ),
+  );
 }

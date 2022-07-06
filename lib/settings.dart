@@ -25,10 +25,16 @@ class Settings {
   static final SettingsPack defaultSettings = SettingsPack(Languages.eo);
 
   late SettingsPack _curSettings;
+  late SettingsPack _tempSettings;
+
+  SettingsPack _copyCurSettings() {
+    return SettingsPack(_curSettings.curLang);
+  }
 
   static const String _langData = "lang";
   StreamController<Languages> langStream =
       StreamController<Languages>.broadcast();
+
   void setLang(Languages newLang) async {
     if (newLang != _curSettings.curLang) {
       _curSettings.curLang = newLang;
@@ -40,6 +46,7 @@ class Settings {
   Settings._create(SharedPreferences prefs, SettingsPack curSettings) {
     _prefs = prefs;
     _curSettings = curSettings;
+    _tempSettings = _curSettings;
 
     langStream.add(_curSettings.curLang);
   }
@@ -65,9 +72,26 @@ class Settings {
     return settings;
   }
 
-  String retrieveMessage(Messages message) {
-    // print(
-    //     "Retrieving message '${message}', current language - '${_curSettings.curLang}'");
-    return messages[_curSettings.curLang]![message]!;
+  String retrieveMessage(Messages message, {bool mainData = true}) {
+    return messages[mainData ? _curSettings.curLang : _tempSettings.curLang]![
+        message]!;
+  }
+
+  //-----------------------------------------
+  // Fields and methods for working with settings screen
+  StreamController<Languages> langSettingStream =
+      StreamController<Languages>.broadcast();
+
+  void settingLang(Languages? newLang) {
+    _tempSettings.curLang = newLang ?? defaultSettings.curLang;
+    langSettingStream.add(_tempSettings.curLang);
+  }
+
+  Languages enterSettingsScreen() {
+    _tempSettings = _copyCurSettings();
+
+    langSettingStream.add(_tempSettings.curLang);
+
+    return _tempSettings.curLang;
   }
 }
