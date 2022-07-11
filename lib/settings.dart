@@ -35,7 +35,7 @@ class Settings {
   StreamController<Languages> langStream =
       StreamController<Languages>.broadcast();
 
-  void setLang(Languages newLang) async {
+  Future<void> setLang(Languages newLang) async {
     if (newLang != _curSettings.curLang) {
       _curSettings.curLang = newLang;
       await _prefs.setString(_langData, EnumToString.convertToString(newLang));
@@ -93,5 +93,9 @@ class Settings {
     langSettingStream.add(_tempSettings.curLang);
 
     return _tempSettings.curLang;
+  }
+
+  Future<void> storeSettings() async {
+    await setLang(_tempSettings.curLang);
   }
 }

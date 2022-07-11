@@ -25,7 +25,6 @@ class _SettingsPageState extends State<SettingsPage> {
         .langSettingStream
         .stream
         .listen((Languages newLang) {
-      print("!!! Listener '${newLang}'");
       _curLang = newLang;
     });
     _curLang = GetIt.I<Settings>().enterSettingsScreen();
@@ -52,11 +51,12 @@ class _SettingsPageState extends State<SettingsPage> {
             builder: (_, __) {
               return Column(
                 children: [
-                  head(),
+                  _head(),
                   SingleChildScrollView(
                     child: Column(
                       children: [
-                        languageSettings(),
+                        _languageSettings(),
+                        _divider(),
                       ],
                     ),
                   ),
@@ -67,7 +67,17 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 
-  Widget head() {
+  Widget _divider() {
+    return Divider(
+      height: 20.0,
+      thickness: 3.0,
+      color: GetIt.I<Settings>().primaryColor,
+      indent: 30.0,
+      endIndent: 30.0,
+    );
+  }
+
+  Widget _head() {
     return Container(
       decoration: BoxDecoration(
         color: GetIt.I<Settings>().primaryColor,
@@ -80,35 +90,41 @@ class _SettingsPageState extends State<SettingsPage> {
               child: Icon(
                 Icons.check,
                 color: Colors.white,
-                size: 32,
+                size: 28,
               ),
-              onPressed: null,
+              onPressed: _storeSettings,
             ),
             Spacer(),
             Text(
               GetIt.I<Settings>()
                   .retrieveMessage(Messages.settingsTitle, mainData: false),
               style: TextStyle(
-                fontSize: 26,
+                fontSize: 24,
                 color: Colors.white,
               ),
             ),
             Spacer(),
             TextButton(
-              child: Icon(
-                Icons.close,
-                color: Colors.white,
-                size: 32,
-              ),
-              onPressed: null,
-            ),
+                child: Icon(
+                  Icons.close,
+                  color: Colors.white,
+                  size: 28,
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                }),
           ],
         ),
       ),
     );
   }
 
-  Widget languageSettings() {
+  void _storeSettings() async {
+    Navigator.of(context).pop();
+    await GetIt.I<Settings>().storeSettings();
+  }
+
+  Widget _languageSettings() {
     return Column(
       children: [
         SizedBox(height: 5),
@@ -121,6 +137,7 @@ class _SettingsPageState extends State<SettingsPage> {
             ),
           ],
         ),
+        SizedBox(height: 10),
         _languageRadio("Esperanto", "assets/eo.svg", Languages.eo, (_) {
           GetIt.I<Settings>().settingLang(Languages.eo);
         }),
@@ -146,8 +163,17 @@ class _SettingsPageState extends State<SettingsPage> {
           groupValue: _curLang,
           onChanged: func,
         ),
-        SvgPicture.asset(flagFile, height: 20, width: 30),
-        Text(labelText),
+        SizedBox(width: 5),
+        ConstrainedBox(
+          constraints: BoxConstraints(
+            maxHeight: 15,
+            maxWidth: 20,
+          ),
+          child: SvgPicture.asset(flagFile,
+              height: 15, width: 20, fit: BoxFit.fill),
+        ),
+        SizedBox(width: 8.0),
+        Text(labelText, style: TextStyle(fontSize: 16)),
       ],
     );
   }

@@ -84,9 +84,6 @@ class Model {
             .map((hint) => hint['value'] as String)
             .where((hint) => hint != ""),
         growable: false);
-    if (gotHints.isEmpty) {
-      gotHints = [GetIt.I<Settings>().retrieveMessage(Messages.noSuggestions)];
-    }
     setHints(gotHints);
   }
 

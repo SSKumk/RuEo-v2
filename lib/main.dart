@@ -202,10 +202,7 @@ Widget constructWithLanguage(
   return StreamBuilder<Languages>(
       stream: GetIt.I<Settings>().langStream.stream,
       initialData: Settings.defaultSettings.curLang,
-      builder: (
-        BuildContext context,
-        _,
-      ) {
+      builder: (_, __) {
         return func(GetIt.I<Settings>().retrieveMessage(messType) + addText);
       });
 }
